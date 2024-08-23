@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package com.example.demo.utils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Component
-public class JwtService {
+public class JwtUtils {
 
 	// Replace this with a secure key in a real application, ideally fetched from
 	// environment variables

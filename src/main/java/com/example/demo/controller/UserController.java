@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.model.AuthRequest;
 import com.example.demo.model.UserInfo;
-import com.example.demo.service.JwtService;
 import com.example.demo.service.UserInfoService;
+import com.example.demo.utils.JwtUtils;
 
 @RestController
 @RequestMapping("/auth")
@@ -21,7 +21,7 @@ public class UserController {
 	private UserInfoService service;
 
 	@Autowired
-	private JwtService jwtService;
+	private JwtUtils jwtUtils;
 
 //	@Autowired
 //	private AuthenticationManager authenticationManager;
@@ -53,7 +53,7 @@ public class UserController {
 //		Authentication authentication = authenticationManager.authenticate(
 //				new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
 //		if (true) {
-			return jwtService.generateToken(authRequest.getUsername());
+			return jwtUtils.generateToken(authRequest.getUsername());
 //		} else {
 //			throw new UsernameNotFoundException("Invalid user request!");
 //		}

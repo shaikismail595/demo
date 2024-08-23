@@ -8,8 +8,8 @@ import com.example.demo.model.UserInfo;
 public class UserInfoRepository {
 	public UserInfo findByEmail(String email) {
 		return new UserInfo(1, "abba", "abba@wsz.com","1234","ROLE_USER");
-	} // Use 'email' if that is the correct field for login
-
-	public void save(UserInfo userInfo) {
+	} 
+	public String save(UserInfo userInfo) {
+		return "User Added Successfully";
 	}
 }

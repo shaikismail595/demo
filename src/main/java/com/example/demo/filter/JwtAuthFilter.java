@@ -12,8 +12,8 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.example.demo.service.JwtService;
 import com.example.demo.service.UserInfoService;
+import com.example.demo.utils.JwtUtils;
 
 import java.io.IOException;
 
@@ -21,7 +21,7 @@ import java.io.IOException;
 public class JwtAuthFilter extends OncePerRequestFilter {
 
 	@Autowired
-	private JwtService jwtService;
+	private JwtUtils jwtUtils;
 
 	@Autowired
 	private UserInfoService userDetailsService;
@@ -37,7 +37,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 		// Check if the header starts with "Bearer "
 		if (authHeader != null && authHeader.startsWith("Bearer ")) {
 			token = authHeader.substring(7); // Extract token
-			username = jwtService.extractUsername(token); // Extract username from token
+			username = jwtUtils.extractUsername(token); // Extract username from token
 		}
 
 		// If the token is valid and no authentication is set in the context
@@ -45,7 +45,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 			UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
 			// Validate token and set authentication
-			if (jwtService.validateToken(token, userDetails)) {
+			if (jwtUtils.validateToken(token, userDetails)) {
 				UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails,
 						null, userDetails.getAuthorities());
 				authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

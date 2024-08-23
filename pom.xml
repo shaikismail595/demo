@@ -72,6 +72,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+<<<<<<< Updated upstream
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -80,6 +81,43 @@
 					<source>${java.version}</source>
 					<target>${java.version}</target>
 				</configuration>
+=======
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			
+             <plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.8</version>
+				<configuration>
+					<excludes>
+						<exclude>**/com/example/demo/request/**.*</exclude>
+						<exclude>**/com/example/demo/response/**.*</exclude>
+						<exclude>**/com/example/demo/**.*</exclude>
+						<exclude>**/com/example/demo/config/**.*</exclude>
+						<exclude>**/com/example/demo/model/**.*</exclude>
+						<exclude>**/com/example/demo/filter/**.*</exclude>
+						<exclude>**/com/example/demo/utils/**.*</exclude>
+					</excludes>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<!-- attached to Maven test phase -->
+					<execution>
+						<id>report</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+>>>>>>> Stashed changes
 			</plugin>
 		</plugins>
 	</build>
