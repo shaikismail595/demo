@@ -1,6 +1,11 @@
 package com.example.demo.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 //import org.springframework.security.authentication.AuthenticationManager;
 //import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -9,6 +14,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.model.AuthRequest;
+import com.example.demo.model.User;
 import com.example.demo.model.UserInfo;
 import com.example.demo.service.UserInfoService;
 import com.example.demo.utils.JwtUtils;
@@ -25,6 +31,15 @@ public class UserController {
 
 //	@Autowired
 //	private AuthenticationManager authenticationManager;
+
+	@GetMapping("/userInfo")
+	public ResponseEntity<User> getUserInfo() {
+		User user = new User("John Doe", "1234567890", "en-US", "johndoe@example.com", "johndoe", "John", "Doe",
+				"America/Los_Angeles", true, "Doe", "John", "admin,user", "standard", "user123", "groupA,groupB");
+
+		return ResponseEntity.ok(user);
+
+	}
 
 	@GetMapping("/welcome")
 	public String welcome() {
@@ -53,7 +68,7 @@ public class UserController {
 //		Authentication authentication = authenticationManager.authenticate(
 //				new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
 //		if (true) {
-			return jwtUtils.generateToken(authRequest.getUsername());
+		return jwtUtils.generateToken(authRequest.getUsername());
 //		} else {
 //			throw new UsernameNotFoundException("Invalid user request!");
 //		}
