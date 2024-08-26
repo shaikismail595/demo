@@ -35,9 +35,7 @@ public class UserInfoService implements UserDetailsService {
 				.orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
 	}
 
-	@Cacheable("userInfo")
 	public String addUser(UserInfo userInfo) {
-		doLongRunningTask();
 		userInfo.setPassword(encoder.encode(userInfo.getPassword()));
 		return repository.save(userInfo);
 	}
