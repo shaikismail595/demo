@@ -57,9 +57,15 @@ public class UserInfo {
 		return roles;
 	}
 
+
 	public void setRoles(String roles) {
 		this.roles = roles;
 	}
 
-
+	@Override
+	public String toString() {
+		return "UserInfo [id=" + id + ", name=" + name + ", email=" + email + ", password=" + password + ", roles="
+				+ roles + "]";
+	}
+	
 }
