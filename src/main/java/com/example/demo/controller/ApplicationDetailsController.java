@@ -2,7 +2,10 @@ package com.example.demo.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,10 +14,13 @@ import com.example.demo.model.ApplicationDetails;
 
 @RestController
 @RequestMapping("/app")
+@CrossOrigin("*")
 public class ApplicationDetailsController {
-	
+	private static final Logger logger = LoggerFactory.getLogger(ApplicationDetailsController.class);
+    
 	@GetMapping("/appList")
 	public ResponseEntity<List<ApplicationDetails>> getAllApp(){
+		logger.info("getAllApp method started..");
 		List<ApplicationDetails> response= List.of(
 				new ApplicationDetails("My Test App", 1234567890L, "example.okta.com", "SAML_2_0", "ACTIVE", "https://example.com/my-test-app"),
 				new ApplicationDetails("HR Portal", 9876543210L, "example2.okta.com", "OIDC", "INACTIVE", "https://example2.com/hr-portal"),
@@ -27,6 +33,8 @@ public class ApplicationDetailsController {
 				new ApplicationDetails("Sales Portal", 7777777777L, "example9.okta.com", "SAML_2_0", "INACTIVE", "https://example9.com/sales-portal"),
 				new ApplicationDetails("Marketing System", 8888888888L, "example10.okta.com", "OIDC", "PENDING", "https://example10.com/marketing-system")
 				);
+		logger.info("getAllApp method ended..");
+		   
 		return ResponseEntity.ok(response);
 		
 	}

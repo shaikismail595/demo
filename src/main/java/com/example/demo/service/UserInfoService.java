@@ -1,5 +1,7 @@
 package com.example.demo.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
@@ -9,6 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.controller.ApplicationDetailsController;
 import com.example.demo.model.UserInfo;
 import com.example.demo.model.UserInfoDetails;
 import com.example.demo.repository.UserInfoRepository;
@@ -18,6 +21,9 @@ import java.util.Optional;
 @Service
 @EnableCaching
 public class UserInfoService implements UserDetailsService {
+	
+	private static final Logger logger = LoggerFactory.getLogger(UserInfoService.class);
+    
 
 	@Autowired
 	private UserInfoRepository repository;

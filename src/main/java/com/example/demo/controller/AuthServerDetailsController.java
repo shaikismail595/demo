@@ -2,7 +2,10 @@ package com.example.demo.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,10 +14,15 @@ import com.example.demo.model.AuthServerDetails;
 
 @RestController
 @RequestMapping("/authServer")
+@CrossOrigin("*")
 public class AuthServerDetailsController {
+	
+	private static final Logger logger = LoggerFactory.getLogger(AuthServerDetailsController.class);
+
 	
 	@GetMapping("/authServerList")
 	public ResponseEntity<List<AuthServerDetails>> getAllAuthServer(){
+		logger.info("getAllAuthServer method started..");
 	    List<AuthServerDetails> response = List.of(
 	            new AuthServerDetails("My Test Auth Server", "https://example.com/my-test-auth-server", "https://example.com/my-test-issuer-uri", "ACTIVE"),
 	            new AuthServerDetails("HR Auth Server", "https://example2.com/hr-auth-server", "https://example2.com/hr-issuer-uri", "INACTIVE"),
@@ -27,6 +35,7 @@ public class AuthServerDetailsController {
 	            new AuthServerDetails("Sales Portal Auth Server", "https://example9.com/sales-portal-auth-server", "https://example9.com/sales-portal-issuer-uri", "INACTIVE"),
 	            new AuthServerDetails("Marketing System Auth Server", "https://example10.com/marketing-system-auth-server", "https://example10.com/marketing-system-issuer-uri", "PENDING")
 	    );
+		logger.info("getAllAuthServer method ended..");
 	    return ResponseEntity.ok(response);
 	}
 
