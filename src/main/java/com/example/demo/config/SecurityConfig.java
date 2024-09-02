@@ -27,46 +27,43 @@ public class SecurityConfig {
 
     @Autowired
     private JwtAuthFilter authFilter;
-
-    @Bean
-    UserDetailsService userDetailsService() {
-        return new UserInfoService(); // Ensure UserInfoService implements UserDetailsService
-    }
+    
+  @Bean
+  UserDetailsService userDetailsService() {
+      return new UserInfoService(); 
+  }
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable()) // Disable CSRF for stateless APIs
+            .csrf(csrf -> csrf.disable()) 
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/auth/welcome", "/auth/addNewUser", "/auth/generateToken", "/auth/users","/auth/userInfo","/app/appList","/authServer/authServerList").permitAll()
-                .requestMatchers("/auth/user/**").hasAuthority("ROLE_USER")
-                .requestMatchers("/auth/admin/**").hasAuthority("ROLE_ADMIN")
+                .requestMatchers("/auth/welcome", "/auth/addNewUser", "/auth/generateToken", "/auth/users","/auth/userInfo","/app/appList").permitAll()
+                .anyRequest().authenticated()
             )
             .sessionManagement(sess -> sess
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // No sessions
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS) 
             )
-            .authenticationProvider(authenticationProvider()) // Custom authentication provider
-            .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class); // Add JWT filter
+            .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class); 
 
         return http.build();
     }
+    
+  @Bean
+  PasswordEncoder passwordEncoder() {
+      return new BCryptPasswordEncoder(); 
+  }
 
-    @Bean
-    PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(); // Password encoding
-    }
+  @Bean
+  AuthenticationProvider authenticationProvider() {
+      DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+     authenticationProvider.setUserDetailsService(userDetailsService());
+      authenticationProvider.setPasswordEncoder(passwordEncoder());
+      return authenticationProvider;
+  }
 
-    @Bean
-    AuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(userDetailsService());
-        authenticationProvider.setPasswordEncoder(passwordEncoder());
-        return authenticationProvider;
-    }
-
-    @Bean
-    AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-        return config.getAuthenticationManager();
-    }
+  @Bean
+  AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+      return config.getAuthenticationManager();
+  }
 }
-

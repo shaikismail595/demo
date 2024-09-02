@@ -6,8 +6,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 
-import com.example.demo.controller.AuthServerDetailsController;
-
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
 public class DemoApplication {
 	private static final Logger logger = LoggerFactory.getLogger(DemoApplication.class);

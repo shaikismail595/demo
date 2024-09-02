@@ -63,7 +63,7 @@ public class UserController {
 		return "Welcome to Admin Profile";
 	}
 
-	@PostMapping("/generateToken")
+@PostMapping("/generateToken")
 	public String authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
 		return jwtUtils.generateToken(authRequest.getUsername());
 	}
