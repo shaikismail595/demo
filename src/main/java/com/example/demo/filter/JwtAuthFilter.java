@@ -27,38 +27,37 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 	@Autowired
 	private JwtUtils jwtUtils;
 
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		// Retrieve the Authorization header
 		String authHeader = request.getHeader("Authorization");
-		
+
 		String token = null;
-	
-		// Check if the header starts with "Bearer "
+
 		if (authHeader != null && authHeader.startsWith("Bearer ")) {
 			token = authHeader.substring(7); // Extract token
 		}
 		if (token != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            Claims claims = jwtUtils.extractAllClaims(token);
-            String username =claims.getSubject();
-            
-			List<String> roles = (List<String>) ((Map<String, Object>) ((Map<String, Object>) claims.get("https://127.0.0.1:3000/autorization")).get("authorization")).get("roles");
-            List<SimpleGrantedAuthority> authorities = roles.stream()
-                    .map(role -> new SimpleGrantedAuthority(role))
-                    .collect(Collectors.toList());
-            
-      
-            // Create an authentication token
-            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, null, authorities);
-            authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+			Claims claims = jwtUtils.extractAllClaims(token);
+			if (jwtUtils.isTokenExpired(claims)) {
+				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+				response.setContentType("application/json");
+				response.getWriter().write("{\"error\": \"JWT Token  expired !\"}");
+				return;
+			} else {
+				String username = claims.getSubject();
+				List<String> roles = jwtUtils.extractAllRoles(claims);
+				List<SimpleGrantedAuthority> authorities = roles.stream().map(role -> new SimpleGrantedAuthority(role))
+						.collect(Collectors.toList());
 
-            // Set the authentication token in the security context
-            SecurityContextHolder.getContext().setAuthentication(authToken);
-        }
-		// Continue the filter chain
+				UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, null,
+						authorities);
+				authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+				SecurityContextHolder.getContext().setAuthentication(authToken);
+			}
+		}
 		filterChain.doFilter(request, response);
 	}
-	
+
 }

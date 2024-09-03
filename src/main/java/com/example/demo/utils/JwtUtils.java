@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,9 +32,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 @Component
 public class JwtUtils {
-
-	// Replace this with a secure key in a real application, ideally fetched from
-	// environment variables
 	public static final String AUTH0_DOMAIN = "dev-7000.us.auth0.com";
 	public static final String SECRET = "MIIEpAIBAAKCAQEAn1pMVSEDO4EPzQxKgAakFxRgMGiewWZFAktenWo5aMt/OIso";
 
@@ -53,16 +51,12 @@ public class JwtUtils {
 
 	// Get the signing key for JWT token
 	private Key getSignKey() {
-		RSAPublicKey key=getPublicKey();
-		System.out.println("key"+key);
 		byte[] keyBytes = Decoders.BASE64.decode(SECRET);
 		return Keys.hmacShaKeyFor(keyBytes);
 	}
 
 	// Extract the username from the token
 	public String extractUsername(String token) {
-		RSAPublicKey key=getPublicKey();
-		System.out.println("key"+key);
 		return extractClaim(token, Claims::getSubject);
 	}
 
@@ -95,7 +89,7 @@ public class JwtUtils {
 	}
 	
 	
-	private RSAPublicKey getPublicKey() {
+	private Key getPublicKey() {
         String publicKeyUrl = "https://" + AUTH0_DOMAIN + "/.well-known/jwks.json";
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(publicKeyUrl).build();
@@ -113,5 +107,18 @@ public class JwtUtils {
             throw new RuntimeException("Failed to fetch public key", e);
         }
         
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<String> extractAllRoles(Claims claims) {
+		List<String> roles = (List<String>) ((Map<String, Object>) ((Map<String, Object>) claims.get("https://127.0.0.1:3000/autorization")).get("authorization")).get("roles");
+		return roles;
+	}
+
+	public boolean isTokenExpired(Claims claims) {
+	    long currentTime = System.currentTimeMillis(); 
+	    long expirationTime = claims.getExpiration().getTime();
+
+	    return currentTime >= expirationTime; 
 	}
 }

@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.model.UserInfo;
-import com.example.demo.service.EmailService;
 
 @Repository
 public class UserInfoRepository {

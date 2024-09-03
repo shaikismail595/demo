@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import com.example.demo.model.AuthServerDetails;
 
@@ -19,6 +21,7 @@ public class AuthServerDetailsTest {
 	private AuthServerDetailsController serverDetailsController;
 
 	@Test
+	@WithMockUser(authorities = "Developer")
 	public void getAllAuthServerTest() throws Exception {
 		List<AuthServerDetails> expectedAuthServerDetails = List.of(
 				new AuthServerDetails("My Test Auth Server", "https://example.com/my-test-auth-server",

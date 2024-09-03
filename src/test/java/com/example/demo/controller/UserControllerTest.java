@@ -61,13 +61,6 @@ public class UserControllerTest {
 				.andExpect(MockMvcResultMatchers.content().string("Welcome to Admin Profile"));
 	}
 
-	@Test
-	public void testGenerateTokenEndpoint() throws Exception {
-		AuthRequest authRequest = new AuthRequest("user", "password");
-		mockMvc.perform(MockMvcRequestBuilders.post("/auth/generateToken").contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(authRequest)))
-				.andExpect(MockMvcResultMatchers.status().isOk());
-	}
 
 	@Test
 	public void testGetAllUsersEndpoint() throws Exception {
