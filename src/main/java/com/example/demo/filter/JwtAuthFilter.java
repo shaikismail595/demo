@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -13,6 +15,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.example.demo.DemoApplication;
 import com.example.demo.utils.JwtUtils;
 
 import io.jsonwebtoken.Claims;
@@ -26,6 +29,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
 	@Autowired
 	private JwtUtils jwtUtils;
+	private static final Logger logger = LoggerFactory.getLogger(JwtAuthFilter.class);
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -47,6 +51,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 			} else {
 				String username = claims.getSubject();
 				List<String> roles = jwtUtils.extractAllRoles(claims);
+				logger.info("User Roles"+roles.toString());
+				
 				List<SimpleGrantedAuthority> authorities = roles.stream().map(role -> new SimpleGrantedAuthority(role))
 						.collect(Collectors.toList());
 

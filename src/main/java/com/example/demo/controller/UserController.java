@@ -58,7 +58,7 @@ public class UserController {
 	}
 
 	@GetMapping("/admin/adminProfile")
-	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+	@PreAuthorize("hasAuthority('Admin')")
 	public String adminProfile() {
 		return "Welcome to Admin Profile";
 	}

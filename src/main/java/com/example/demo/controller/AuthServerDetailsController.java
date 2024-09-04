@@ -22,8 +22,7 @@ public class AuthServerDetailsController {
 
 	
 	@GetMapping("/authServerList")
-	@PreAuthorize("hasAuthority('Developer')")
-	public ResponseEntity<List<AuthServerDetails>> getAllAuthServer(){
+		public ResponseEntity<List<AuthServerDetails>> getAllAuthServer(){
 		logger.info("getAllAuthServer method started..");
 	    List<AuthServerDetails> response = List.of(
 	            new AuthServerDetails("My Test Auth Server", "https://example.com/my-test-auth-server", "https://example.com/my-test-issuer-uri", "ACTIVE"),
