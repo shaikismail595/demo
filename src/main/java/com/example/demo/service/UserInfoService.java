@@ -10,7 +10,6 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.model.UserInfo;
@@ -20,29 +19,19 @@ import com.example.demo.repository.UserInfoRepository;
 @Service
 @EnableCaching
 public class UserInfoService implements UserDetailsService {
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(UserInfoService.class);
-    
 
 	@Autowired
 	private UserInfoRepository repository;
-
-	@Autowired
-	private PasswordEncoder encoder;
 
 	@Override
 	@Cacheable("userInfo")
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		doLongRunningTask();
 		Optional<UserInfo> userDetail = Optional.ofNullable(repository.findByEmail(username));
-		// Converting UserInfo to UserDetails
 		return userDetail.map(UserInfoDetails::new)
 				.orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
-	}
-
-	public String addUser(UserInfo userInfo) {
-		userInfo.setPassword(encoder.encode(userInfo.getPassword()));
-		return repository.save(userInfo);
 	}
 
 	private void doLongRunningTask() {

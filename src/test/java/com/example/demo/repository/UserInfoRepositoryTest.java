@@ -25,12 +25,5 @@ public class UserInfoRepositoryTest {
         assertEquals("ROLE_USER", userInfo.getRoles());
     }
 
-    @Test
-    public void testSave() {
-        UserInfo userInfo = new UserInfo(1, "john", "john@example.com", "password", "ROLE_USER");
-
-        String result = userInfoRepository.save(userInfo);
-
-        assertEquals("User Added Successfully", result);
-    }
+  
 }

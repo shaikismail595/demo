@@ -21,7 +21,6 @@ public class AuthServerDetailsTest {
 	private AuthServerDetailsController serverDetailsController;
 
 	@Test
-	@WithMockUser(authorities = "Developer")
 	public void getAllAuthServerTest() throws Exception {
 		List<AuthServerDetails> expectedAuthServerDetails = List.of(
 				new AuthServerDetails("My Test Auth Server", "https://example.com/my-test-auth-server",

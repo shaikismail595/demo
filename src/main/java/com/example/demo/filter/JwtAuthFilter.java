@@ -2,7 +2,6 @@ package com.example.demo.filter;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -15,7 +14,6 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.example.demo.DemoApplication;
 import com.example.demo.utils.JwtUtils;
 
 import io.jsonwebtoken.Claims;
@@ -35,11 +33,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 		String authHeader = request.getHeader("Authorization");
-
 		String token = null;
 
 		if (authHeader != null && authHeader.startsWith("Bearer ")) {
-			token = authHeader.substring(7); // Extract token
+			token = authHeader.substring(7); 
 		}
 		if (token != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 			Claims claims = jwtUtils.extractAllClaims(token);
