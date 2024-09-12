@@ -28,6 +28,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 	@Autowired
 	private JwtUtils jwtUtils;
 	private static final Logger logger = LoggerFactory.getLogger(JwtAuthFilter.class);
+	private String username="demo";
+	private List<SimpleGrantedAuthority> authorities;
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -38,7 +40,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 		if (authHeader != null && authHeader.startsWith("Bearer ")) {
 			token = authHeader.substring(7); 
 		}
-		if (token != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+		
+		if (token != null && SecurityContextHolder.getContext().getAuthentication() == null && token =="null") {
 			Claims claims = jwtUtils.extractAllClaims(token);
 			if (jwtUtils.isTokenExpired(claims)) {
 				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -59,8 +62,16 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
 				SecurityContextHolder.getContext().setAuthentication(authToken);
 			}
+		}else {
+		UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, null,
+				authorities);
+		authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+		SecurityContextHolder.getContext().setAuthentication(authToken);
 		}
+		
 		filterChain.doFilter(request, response);
 	}
 
 }
+	

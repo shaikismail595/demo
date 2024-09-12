@@ -29,9 +29,9 @@ public class SecurityConfig {
                 .anyRequest().authenticated()
             )
             .sessionManagement(sess -> sess
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS) 
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)  
             )
-            .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class); 
+        	.addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class); 
 
         return http.build();
     }
