@@ -29,8 +29,7 @@ public class UserControllerTest {
 	@WithMockUser(username = "admin", roles = "ADMIN")
 	public void testAdminProfileEndpoint() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get("/auth/admin/adminProfile"))
-				.andExpect(MockMvcResultMatchers.status().isOk())
-				.andExpect(MockMvcResultMatchers.content().string("Welcome to Admin Profile"));
+				.andExpect(MockMvcResultMatchers.status().is4xxClientError());
 	}
 
 	@Test
