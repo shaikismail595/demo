@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -18,13 +19,18 @@ public class UserController {
 
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
-
+	@Value("${app.username}")
+	private String userName;
+	
+    @Value("${app.password}")
+    private String password;
 	@GetMapping("/userInfo")
 	public ResponseEntity<User> getUserInfo() {
 		logger.info("getUserInfo method started..");
 		User user = new User("John Doe", "1234567890", "en-US", "johndoe@example.com", "johndoe", "John", "Doe",
 				"America/Los_Angeles", true, "Doe", "John", "admin,user", "standard", "user123", "groupA,groupB");
 		logger.info("getUserInfo method ended..");
+		logger.info(userName +" : "+ password);
 		return ResponseEntity.ok(user);
 
 	}

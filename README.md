@@ -15,3 +15,10 @@ To run the test cases, use the following Maven commands:
 * `mvn compile`: Compiles the Java code in the project.
 * `mvn package`: Packages the project into a JAR file.
 * `mvn install`: Installs the project into the local Maven repository.
+
+_______________________________________________________________________________________________________________
+add `-Djasypt.encryptor.password=<your_password_here>` in VM arguments
+
+use following command to encrypt your values-
+
+`mvn jasypt:encrypt-value -Djasypt.encryptor.password=<your_password_here> -Djasypt.plugin.value=<value_to_encrypt>`
